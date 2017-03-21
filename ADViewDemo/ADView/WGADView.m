@@ -7,9 +7,9 @@
 //
 
 #import "WGADView.h"
-#import <Foundation/Foundation.h>
-#import <SDWebImage/SDImageCache.h>
-#import <SDWebImage/SDWebImageManager.h>
+
+#import "SDImageCache.h"
+#import "SDWebImageManager.h"
 
 #define kScreenW  CGRectGetWidth([UIScreen mainScreen].bounds)
 #define kScreenH  CGRectGetHeight([UIScreen mainScreen].bounds)
