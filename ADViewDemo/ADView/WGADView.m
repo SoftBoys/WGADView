@@ -11,13 +11,13 @@
 #import "SDImageCache.h"
 #import "SDWebImageManager.h"
 
-#define kScreenW  CGRectGetWidth([UIScreen mainScreen].bounds)
-#define kScreenH  CGRectGetHeight([UIScreen mainScreen].bounds)
+#define kMainScreenW  CGRectGetWidth([UIScreen mainScreen].bounds)
+#define kMainScreenH  CGRectGetHeight([UIScreen mainScreen].bounds)
 
 #ifdef DEBUG
-#define WGLog(...)  NSLog(__VA_ARGS__)
+#define WGDebugLog(...)  NSLog(__VA_ARGS__)
 #else
-#define WGLog(...)
+#define WGDebugLog(...)
 #endif
 
 @interface WGADView ()
@@ -42,10 +42,35 @@
     if (self = [super init]) {
         self.userInteractionEnabled = YES;
         _duration = 5;
+        
+        // UILaunchImages
+        self.image = [self getLaunchImage];
+        
     }
     return self;
 }
-
+- (UIImage *)getLaunchImage {
+    UIImage *lauchImage  = nil;
+    NSString *viewOrientation = nil;
+    CGSize viewSize  = [UIScreen mainScreen].bounds.size;
+    UIInterfaceOrientation orientation  = [[UIApplication sharedApplication] statusBarOrientation];
+    if (orientation == UIInterfaceOrientationLandscapeLeft ||
+        orientation == UIInterfaceOrientationLandscapeRight) {
+        viewOrientation = @"Landscape";
+    } else {
+        viewOrientation = @"Portrait";
+    }
+    NSDictionary *info = [NSBundle mainBundle].infoDictionary;
+    NSArray *imagesDictionary = info[@"UILaunchImages"];
+    for (NSDictionary *dict in imagesDictionary) {
+        CGSize imageSize = CGSizeFromString(dict[@"UILaunchImageSize"]);
+        if (CGSizeEqualToSize(imageSize, viewSize) && [viewOrientation isEqualToString:dict[@"UILaunchImageOrientation"]]) {
+            lauchImage = [UIImage imageNamed:dict[@"UILaunchImageName"]];
+        }
+    }
+//    WGDebugLog(@"info:%@", info);
+    return lauchImage;
+}
 - (void)setButtonType:(WGSkipButtonType)buttonType {
     _buttonType = buttonType;
     for (UIView *subview in self.subviews) {
@@ -62,18 +87,19 @@
 
 - (void)reloadAdImageWithUrl:(NSString *)imageUrl {
     if (imageUrl.length <= 0) {
+        [self invalidate];
+        [self removeFromSuperview];
         return;
     }
     
     [self startTimer];
-    [self setCircle];
     
     UIImage *cacheImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];
     if (cacheImage) {
-        WGLog(@"cache");
+        WGDebugLog(@"cache");
         self.image = cacheImage;
     } else {
-        WGLog(@"download");
+        WGDebugLog(@"download");
         __weak typeof(self) weakself = self;
         NSURL *url = [NSURL URLWithString:imageUrl];
         [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -95,6 +121,8 @@
 }
 
 - (void)startTimer {
+    // 开启圆盘倒计时
+    [self setCircle];
     [self invalidate];
     self.seconds = self.duration;
 
@@ -120,7 +148,7 @@
         [self invalidate];
         [self dismiss];
     } else {
-        NSLog(@"duration:%@",@(duration));
+        WGDebugLog(@"duration:%@",@(duration));
     }
 }
 - (void)setCircle {
@@ -188,7 +216,7 @@
         button.titleLabel.font = [UIFont systemFontOfSize:15];
         
         CGFloat buttonW = 50, buttonH = buttonW;
-        CGFloat buttonX = kScreenW - buttonW - 10;
+        CGFloat buttonX = kMainScreenW - buttonW - 10;
         CGFloat buttonY = 20;
         button.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
         
@@ -207,7 +235,6 @@
         
         [button addTarget:self action:@selector(skipClick) forControlEvents:UIControlEventTouchUpInside];
         
-        
         _buttonCircle_skip = button;
     }
     return _buttonCircle_skip;
@@ -221,7 +248,7 @@
         button.titleLabel.font = [UIFont systemFontOfSize:14];
         button.backgroundColor = [self skipBackgroundColor];
         CGFloat buttonW = 60, buttonH = 30;
-        CGFloat buttonX = kScreenW - buttonW - 10;
+        CGFloat buttonX = kMainScreenW - buttonW - 10;
         CGFloat buttonY = 20;
         button.frame = CGRectMake(buttonX, buttonY, buttonW, buttonH);
         [button addTarget:self action:@selector(skipClick) forControlEvents:UIControlEventTouchUpInside];
@@ -232,6 +259,6 @@
 
 #pragma mark - private
 - (void)dealloc {
-    WGLog(@"---AdView is dealloc---");
+    WGDebugLog(@"---AdView is dealloc---");
 }
 @end

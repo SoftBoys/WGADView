@@ -39,6 +39,7 @@
     adview.buttonType = WGSkipButtonTypeCircleTime;
     NSString *url = @"https://bjbgp02.baidupcs.com/file/1d27693666729daf780597c9b9614562?bkt=p3-14001d27693666729daf780597c9b96145620264ce41000000029f99&fid=3878415752-250528-525904037071361&time=1490075084&sign=FDTAXGERLBHS-DCb740ccc5511e5e8fedcff06b081203-mOheBJr93FH%2BjZKyS9RWJUVaMfQ%3D&to=76&size=171929&sta_dx=171929&sta_cs=0&sta_ft=png&sta_ct=0&sta_mt=0&fm2=MH,Yangquan,Netizen-anywhere,,beijingpbs&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=14001d27693666729daf780597c9b96145620264ce41000000029f99&sl=72286287&expires=8h&rt=pr&r=109941698&mlogid=1845516532830421821&vuk=3878415752&vbdid=1322237120&fin=launch%402x.png&fn=launch%402x.png&rtype=1&iv=0&dp-logid=1845516532830421821&dp-callid=0.1.1&hps=1&csl=400&csign=ix%2Bl5hyOvcsdx%2FawXCO9QUNBNr4%3D&by=themis";
 //    url = @"http://blog.163.com/gjw_1991/album/#m=2&aid=304314113&pid=9768460898";
+    url = @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1490158649193&di=f937d1d1446b360ecb83d3ec2d69c74a&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01e1445757ee930000018c1b51cf31.png";
     [adview reloadAdImageWithUrl:url];
     
     return YES;
