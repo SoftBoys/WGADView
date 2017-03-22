@@ -26,6 +26,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) WGADViewTapHandle tapHandle;
 /** 广告图的显示时间 (默认5s) */
 @property (nonatomic, assign) NSTimeInterval duration;
+/** 默认显示的Image (默认为launchImage) */
+@property (nonatomic, strong) UIImage *placeholderImage;
 /** 倒计时跳过按钮的背景颜色 默认黑色0.5 (子类中重写) */
 - (UIColor *)skipBackgroundColor;
 /** 倒计时线条的颜色 默认红色 (子类中重写) */

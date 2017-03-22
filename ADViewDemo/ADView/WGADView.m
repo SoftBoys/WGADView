@@ -44,10 +44,14 @@
         _duration = 5;
         
         // UILaunchImages
-        self.image = [self getLaunchImage];
-        
+//        self.image = [self getLaunchImage];
+        self.placeholderImage = [self getLaunchImage];
     }
     return self;
+}
+- (void)setPlaceholderImage:(UIImage *)placeholderImage {
+    _placeholderImage = placeholderImage;
+    self.image = _placeholderImage;
 }
 - (UIImage *)getLaunchImage {
     UIImage *lauchImage  = nil;
