@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "WGADView"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "启动图广告页面"
 
   s.homepage     = "https://github.com/SoftBoys/WGADView"
