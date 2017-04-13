@@ -195,7 +195,8 @@
     self.timer = nil;
 }
 - (void)skipClick {
-    [self tapWithIndex:0];
+//    [self tapWithIndex:0];
+    [self dismiss];
 }
 - (void)tapWithIndex:(NSInteger)index {
     [self invalidate];
