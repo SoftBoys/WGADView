@@ -46,6 +46,7 @@
         // UILaunchImages
 //        self.image = [self getLaunchImage];
         self.placeholderImage = [self getLaunchImage];
+        self.hidden = YES;
     }
     return self;
 }
@@ -95,7 +96,7 @@
         [self removeFromSuperview];
         return;
     }
-    
+    self.hidden = NO;
     [self startTimer];
     
     UIImage *cacheImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageUrl];
@@ -152,7 +153,7 @@
         [self invalidate];
         [self dismiss];
     } else {
-        WGDebugLog(@"duration:%@",@(duration));
+//        WGDebugLog(@"duration:%@",@(duration));
     }
 }
 - (void)setCircle {
@@ -182,27 +183,43 @@
 }
 #pragma mark - 隐藏图片
 - (void)dismiss {
-    [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.transform = CGAffineTransformMakeScale(1.2, 1.2);
-        self.alpha = 0.0;
-    } completion:^(BOOL finished) {
+    [self dismissWithAnimated:YES];
+//    [UIView animateWithDuration:0.5 delay:0.3 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//        self.transform = CGAffineTransformMakeScale(1.2, 1.2);
+//        self.alpha = 0.0;
+//    } completion:^(BOOL finished) {
+//        [self invalidate];
+//        [self removeFromSuperview];
+//    }];
+}
+- (void)dismissWithAnimated:(BOOL)animated {
+    if (animated) {
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            self.transform = CGAffineTransformMakeScale(1.2, 1.2);
+            self.alpha = 0.0;
+        } completion:^(BOOL finished) {
+            [self invalidate];
+            [self removeFromSuperview];
+        }];
+    } else {
         [self invalidate];
         [self removeFromSuperview];
-    }];
+    }
 }
 - (void)invalidate {
     [self.timer invalidate];
     self.timer = nil;
 }
 - (void)skipClick {
-//    [self tapWithIndex:0];
-    [self dismiss];
+    [self tapWithIndex:0];
+//    [self dismiss];
 }
 - (void)tapWithIndex:(NSInteger)index {
-    [self invalidate];
-    [self removeFromSuperview];
+//    [self invalidate];
+//    [self removeFromSuperview];
+    __weak typeof(self) weakself = self;
     if (self.tapHandle) {
-        self.tapHandle(index);
+        self.tapHandle(weakself, index);
     }
 }
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

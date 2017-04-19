@@ -27,9 +27,13 @@
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     self.window.rootViewController = nav;
     
-    WGADView *adview = [WGADView adviewToWindow:self.window buttonType:WGSkipButtonTypeCircleTime tapHandle:^(NSInteger index) {
+    WGADView *adview = [WGADView adviewToWindow:self.window buttonType:WGSkipButtonTypeCircleTime tapHandle:^(WGADView *adView, NSInteger index) {
         NSLog(@"index:%@", @(index));
+        if (index == 0) {
+            [adView dismissWithAnimated:NO];
+        }
         if (index == 1) {
+            [adView dismiss];
             UIViewController *vc = [UIViewController new];
             vc.view.backgroundColor = [UIColor whiteColor];
             vc.title = @"webView";

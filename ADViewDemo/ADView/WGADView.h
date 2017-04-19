@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-/** index:0 取消 1:点击 */
-typedef void(^WGADViewTapHandle)(NSInteger index);
+
+@class WGADView;
+/** index:0 点击取消按钮 1:点击背景图片 */
+typedef void(^WGADViewTapHandle)(WGADView *adView, NSInteger index);
 
 typedef enum : NSUInteger {
     WGSkipButtonTypeNormalTime, // 跳过按钮显示倒计时
@@ -34,5 +36,10 @@ typedef enum : NSUInteger {
 - (UIColor *)strokeColor;
 /** 加载广告url */
 - (void)reloadAdImageWithUrl:(NSString *)imageUrl;
+
+/** 隐藏广告页 (带有动画) */
+- (void)dismiss;
+/** 隐藏广告页 */
+- (void)dismissWithAnimated:(BOOL)animated;
 
 @end
